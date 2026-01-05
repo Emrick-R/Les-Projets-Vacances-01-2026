@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/assets/index.css">
+    <title>{{.Calcul}}</title>
+</head>
+
+<body>
+    <nav class="navbar">
+        <ul class="nav-menu">
+            <li><a href="/" class="nav-links">Das calculatrice</a></li>
+        </ul>
+    </nav>
+
+    <h1>{{.Calcul}}</h1>
+    <p>{{.Message}}</p>
+
+    <form method="post" action="/">
+        <div class="centre">
+        <label>Premier nombre :</label><br>
+        <input type="text" name="nombre1" required><br>
+
+        <label>Deuxième nombre:</label><br>
+        <input type="text" name="nombre2" required><br><br>
+        </div>
+        
+        <div>
+        <input type="radio" name="opération" value="Add" required>
+        <label >Addition</label>
+
+        <input type="radio" name="opération" value="Sou">
+        <label>Soustraction</label>
+
+        <input type="radio" name="opération" value="Mul">
+        <label>Multiplication</label>
+
+        <input type="radio" name="opération" value="Div">
+        <label>Division</label>
+        </div>
+
+        <br><br>
+
+        <div class="centre" >
+        <button type="submit">Calculer !</button>
+        </div>
+    </form>    
+
+</body>
+
+</html>
