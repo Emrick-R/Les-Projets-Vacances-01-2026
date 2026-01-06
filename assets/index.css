@@ -44,8 +44,8 @@ h1 {
   background: #00eeff;
   background: linear-gradient(
     90deg,
-    rgb(233, 15, 222) 0%,
-    rgb(94, 0, 86) 100%
+    rgb(233, 219, 15) 0%,
+    rgb(115, 117, 1) 100%
   );
   border-bottom: white solid 1px;
 }
@@ -68,9 +68,9 @@ h1 {
 }
 
 .nav-links:hover {
-  background-color: rgb(233, 15, 222);
+  background-color: rgb(233, 219, 15);
   color: #000000;
-  border-bottom: 3px solid rgb(94, 0, 86);
+  border-bottom: 3px solid rgb(93, 94, 0);
   transform: scale(1.08);
 }
 
@@ -88,7 +88,7 @@ h1 {
 
 button {
   padding: 10px 20px;
-  background-color: #a601d8;
+  background-color: rgb(192, 180, 14);
   color: white;
   border: none;
   border-radius: 5px;

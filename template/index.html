@@ -4,59 +4,79 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/assets/index.css">
-    <title>Crazy Quizz</title>
+    <title>Goofy ahh nombre mystère</title>
 </head>
 
 <body>
     <nav class="navbar">
         <ul class="nav-menu">
-            <li><a href="/" class="nav-links">Crazy Quizz</a></li>
+            <li><a href="/" class="nav-links">Goofy ahh nombre mystère</a></li>
         </ul>
     </nav>
-    <h1>{{.Question}}</h1>
-    {{if not .Debutquizz}}
+    <h1>{{.Message}}</h1>
+    {{if not .Debutjeu}}
         <form action="/" method="post">
-            <input type="hidden" name="commencer" value="oui">
-            <button type="submit">Commencer le quizz</button>
+            <input type="hidden" name="commencer" value="oui" autofocus>
+            <button type="submit">Commencer le jeu</button>
         </form>
     {{else}}
 
-        {{if .Finquizz}}
-            <p>Ton score est de {{.Score}}, Bravo !</p>
+        {{if .Finjeu}}
+            {{if .Abandon}}
+                <p>Le nombre mystère était {{.DerniereRep}}</p>
+                <br>
+                <form action="/" method="post">
+                    <input type="hidden" name="recommencer" value="oui" autofocus>
+                    <button type="submit">On se fait une nouvelle goofy ahh game ?</button>
+                </form>
+            {{else}}
+            <h1>Le nombre mystère est {{.DerniereRep}}</h1>
+            <br>
+            <p>Ton score est de {{.Score}} tentatives, Bravo !</p>
             <br>
             <form action="/" method="post">
-                <input type="hidden" name="recommencer" value="oui">
-                <button type="submit">On se le refait ?</button>
+                <input type="hidden" name="recommencer" value="oui" autofocus>
+                <button type="submit">On se fait une nouvelle goofy ahh game ?</button>
             </form>
+            {{end}}
         {{else}}
-            {{if .Finquestion}}
+            {{if .PremiereRep}}
                 <div>
-                    <p>La réponse est :</p>
-                    <p>{{.BonneRep}}</p><br>
-                    <p>Ton score actuel :</p>
-                    <p>{{.Score}}/10</p>
-
+                    
+                    <p>{{.Message}}</p>
+                    <br>
                     <form action="/" method="post">
-                        <input type="hidden" name="suivant" value="oui">
-                        <button type="submit">Question suivante</button>
+                        <input type="number" name="tentative" min="0" max="1000" autofocus>
+                        <button type="submit">Ai-je bon ?</button>
                     </form>
                 </div>
     
             {{else}}
 
-                <div class="ligne">
-                    {{range $i, $rep := .Reponses}}
-                        <div>
-                            <form action="/" method="post">
-                                <input type="hidden" name="réponse" value="{{$rep}}">
-                                <button type="submit">{{$rep}}</button>
-                            </form>
-                        </div>
+                <div>
+                    <p>{{.DerniereRep}}...Mmmh...{{.Aide}}</p>
+                    <br>
+                    <p>Nombre de tentatives : {{.Score}}</p>
+                    <br>
+                    <form action="/" method="post">
+                        <input type="number" name="tentative" value="{{.DerniereRep}}" min="0" max="1000" autofocus>
+                        <button type="submit">Ai-je bon ?</button>
+                    </form>
+                    <br>
+                    <form action="/" method="post">
+                        <input type="hidden" name="tentative" value="abandonner">
+                        <button type="submit">Abandonner (skill issue?)</button>
+                    </form>
+                    <br>
+                    {{if gt (len .Historique) 0}}
+                        <h3>Historique des tentatives :</h3>
+                        <ul>
+                            {{range .Historique}}
+                                <li>{{.}}</li>
+                            {{end}}
+                        </ul>
                     {{end}}
                 </div>
-                <br>
-                <p>Ton score actuel :</p>
-                <p>{{.Score}}/10</p>
             {{end}}
         {{end}}
     {{end}}

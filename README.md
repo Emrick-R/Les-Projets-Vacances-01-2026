@@ -1,14 +1,14 @@
 # Les-Projets-Vacances-01-2026
-# Projet Quizz
+# Projet nommbre mystere
 
-Ce projet a pour but de créer un Quizz simple en utilisant le langage de programmation Golang. L'utilisateur pourra répondre à une série de questions à choix multiples et obtenir un score à la fin du quizz.
-L'interface utilisateur sera en web, il choisira ses réponses via des boutons.
-Il obtiendra son score à la fin du quizz.
+Ce projet a pour but de créer le jeu du nombre mystère en utilisant le langage de programmation Golang.
+L'utilisateur devra deviner un nombre entre 1 et 1000 en faisant des propositions, il sera guidé par des indications (plus grand, plus petit) et sera noté sur son nombre de tentatives.
+L'interface utilisateur sera en web.
 
 ## Fonctionnalités
 
-- Questions à choix multiples
-- Calcul du score final
+- Génération aléatoire d'un nombre mystère entre 0 et 1000
+- Saisie des propositions par l'utilisateur via une interface web
 - Interface utilisateur web simple
 
 ## Technologies Utilisées
