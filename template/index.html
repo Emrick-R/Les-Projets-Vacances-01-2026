@@ -4,60 +4,62 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/assets/index.css">
-    <title>{{.Calcul}}</title>
+    <title>Crazy Quizz</title>
 </head>
 
 <body>
     <nav class="navbar">
         <ul class="nav-menu">
-            <li><a href="/" class="nav-links">The Convertisseur d'unités</a></li>
+            <li><a href="/" class="nav-links">Crazy Quizz</a></li>
         </ul>
     </nav>
+    <h1>{{.Question}}</h1>
+    {{if not .Debutquizz}}
+        <form action="/" method="post">
+            <input type="hidden" name="commencer" value="oui">
+            <button type="submit">Commencer le quizz</button>
+        </form>
+    {{else}}
 
-    <h1>{{.Calcul}}</h1>
-    <p>{{.Message}}</p>
-    <p>Choisis une conversion : </p>
-    <div class="ligne">
-        <div>
+        {{if .Finquizz}}
+            <p>Ton score est de {{.Score}}, Bravo !</p>
+            <br>
             <form action="/" method="post">
-                <input type="hidden" name="opération" value="km">
-                <button type="submit">Kilomètres/Miles</button>
+                <input type="hidden" name="recommencer" value="oui">
+                <button type="submit">On se le refait ?</button>
             </form>
-        </div>
-        <div>
-            <form action="/" method="post">
-                <input type="hidden" name="opération" value="kl">
-                <button type="submit">kg/livres</button>
-            </form>
-        </div>
-        <div>
-            <form action="/" method="post">
-                <input type="hidden" name="opération" value="cf">
-                <button type="submit">Celsius/Fahrenheit</button>
-            </form>
-        </div>
-    </div>
+        {{else}}
+            {{if .Finquestion}}
+                <div>
+                    <p>La réponse est :</p>
+                    <p>{{.BonneRep}}</p><br>
+                    <p>Ton score actuel :</p>
+                    <p>{{.Score}}/10</p>
 
-    <p>Puis calcul :</p>
-    <form action="/" method="post" class="centre">
-        <div class="ligne">
-            <div class="centre">
-            <label>{{.Unité1}} :</label><br>
-            <input type="number" name="nombre1" value="{{.Valeur1}}">
-            </div>
-            <button name="direction" value="changer" type="submit">{{.Direction}}</button>
+                    <form action="/" method="post">
+                        <input type="hidden" name="suivant" value="oui">
+                        <button type="submit">Question suivante</button>
+                    </form>
+                </div>
+    
+            {{else}}
 
-            <div class="centre">
-            <label>{{.Unité2}} :</label><br>
-            <label>{{.Resultat}}</label><br><br>
-            </div>
-        </div>
-                
-        <br><br>
-        
-        <button value="" type="submit">Calculer !</button>
-    </form>    
-
+                <div class="ligne">
+                    {{range $i, $rep := .Reponses}}
+                        <div>
+                            <form action="/" method="post">
+                                <input type="hidden" name="réponse" value="{{$rep}}">
+                                <button type="submit">{{$rep}}</button>
+                            </form>
+                        </div>
+                    {{end}}
+                </div>
+                <br>
+                <p>Ton score actuel :</p>
+                <p>{{.Score}}/10</p>
+            {{end}}
+        {{end}}
+    {{end}}
 </body>
 
 </html>

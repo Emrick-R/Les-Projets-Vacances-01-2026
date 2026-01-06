@@ -3,131 +3,114 @@ package controller
 import (
 	"html/template"
 	"net/http"
-	"strconv"
 )
 
 type PageData struct {
-	Calcul    string
-	Message   string
-	Unité1    string
-	Unité2    string
-	Valeur1   string
-	Resultat  string
-	Direction string
+	Question    string
+	NbQuestion  int
+	Finquizz    bool
+	Score       int
+	Debutquizz  bool
+	Finquestion bool
+	BonneRep    string
+	Reponses    []string
+}
+
+var question []string = []string{
+	"Quelle est la capitale de la France ?",
+	"Combien de continents y a-t-il sur Terre ?",
+	"Quel est l'élément chimique dont le symbole est 'O' ?",
+	"Lesquels de ces aliments n'est pas un fruit ?",
+	"Est-ce que le cannibalisme est légal en France ?",
+
+	"Les claquettes chaussettes, sont-elles socialement acceptables ?",
+	"Quelle est la couleur du cheval blanc d'Henri IV ?",
+	"Combien de côté a un triangle ?",
+	"As-tu faim ?",
+	"Aurais-je une bonne note ?",
+}
+var reponses [][]string = [][]string{
+	{"Paris", "Londres", "Berlin", "Madrid"},
+	{"5", "6", "7", "8"},
+	{"Oxygène", "Or", "Osmium", "Oganesson"},
+	{"Pomme", "Carotte", "Banane", "Orange"},
+	{"Oui", "Non", "Seulement le dimanche"},
+	{"Oui j'adore", "Non c'est pas fou", "Seulement avec les chaussettes à formes"},
+	{"Blanc", "Noir", "Marron", "Gris"},
+	{"3", "4", "5", "6"},
+	{"Pas trop", "Pas du tout", "je mangerais bien mon père"},
+	{"20/20", "Eclaté au sol", "Passable"},
+}
+
+var bonnesReponses []string = []string{
+	"Paris",
+	"7",
+	"Oxygène",
+	"Carotte",
+	"Non",
+	"Non c'est pas fou",
+	"Blanc",
+	"3",
+	"Pas trop",
+	"20/20",
 }
 
 var data = PageData{
-	Calcul:    "Convertis avec assurance avec The convertisseur d'unités !",
-	Message:   "Bienvenue 🎉",
-	Unité1:    "Choisis une unité",
-	Unité2:    "Choisis une unité",
-	Valeur1:   "",
-	Resultat:  "",
-	Direction: "-->",
+	Question:    "Bienvenue 🎉Convertis avec assurance avec The convertisseur d'unités !",
+	Finquizz:    false,
+	Score:       0,
+	Debutquizz:  false,
+	Finquestion: false,
+	BonneRep:    "",
+	Reponses:    []string{},
 }
 
-func Calcul(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		tmpl := template.Must(template.ParseFiles("template/index.html"))
-		tmpl.Execute(w, data)
-		return
-	}
-	if r.FormValue("opération") != "" {
-		switch r.FormValue("opération") {
-		case "km":
-			data.Unité1 = "Kilomètres"
-			data.Unité2 = "Miles"
-			data.Valeur1 = ""
-			data.Resultat = ""
-		case "kl":
-			data.Unité1 = "Kilogrammes"
-			data.Unité2 = "Livres"
-			data.Valeur1 = ""
-			data.Resultat = ""
-		case "cf":
-			data.Unité1 = "Celsius"
-			data.Unité2 = "Fahrenheit"
-			data.Valeur1 = ""
-			data.Resultat = ""
+func Index(w http.ResponseWriter, r *http.Request) {
+	if r.FormValue("recommencer") == "oui" {
+		data = PageData{
+			Question:    "Bienvenue 🎉Un quizz super crazy t'attend !",
+			Finquizz:    false,
+			Score:       0,
+			Debutquizz:  false,
+			Finquestion: false,
+			BonneRep:    "",
+			Reponses:    []string{},
 		}
 		tmpl := template.Must(template.ParseFiles("template/index.html"))
 		tmpl.Execute(w, data)
 		return
 	}
-	if r.FormValue("direction") != "" {
-		switch data.Unité1 {
-		case "Kilomètres":
-			data.Unité1 = "Miles"
-			data.Unité2 = "Kilomètres"
-			data.Valeur1 = ""
-			data.Resultat = ""
-		case "Miles":
-			data.Unité1 = "Kilomètres"
-			data.Unité2 = "Miles"
-			data.Valeur1 = ""
-			data.Resultat = ""
-		case "Kilogrammes":
-			data.Unité1 = "Livres"
-			data.Unité2 = "Kilogrammes"
-			data.Valeur1 = ""
-			data.Resultat = ""
-		case "Livres":
-			data.Unité1 = "Kilogrammes"
-			data.Unité2 = "Livres"
-			data.Valeur1 = ""
-			data.Resultat = ""
-		case "Celsius":
-			data.Unité1 = "Fahrenheit"
-			data.Unité2 = "Celsius"
-			data.Valeur1 = ""
-			data.Resultat = ""
-		case "Fahrenheit":
-			data.Unité1 = "Celsius"
-			data.Unité2 = "Fahrenheit"
-			data.Valeur1 = ""
-			data.Resultat = ""
-		}
+	if r.FormValue("commencer") == "oui" {
+		data.Debutquizz = true
+		data.Question = question[0]
+		data.Reponses = reponses[0]
+		data.BonneRep = bonnesReponses[0]
+		data.NbQuestion = 1
 		tmpl := template.Must(template.ParseFiles("template/index.html"))
 		tmpl.Execute(w, data)
 		return
 	}
-	if r.FormValue("nombre1") != "" {
-		r, err := strconv.ParseFloat(r.FormValue("nombre1"), 64)
-		if err != nil {
-			r = 0
+	if r.FormValue("réponse") != "" {
+		if data.BonneRep == r.FormValue("réponse") {
+			data.Score++
 		}
-		switch data.Unité1 {
-		case "Kilomètres":
-			data.Valeur1 = strconv.FormatFloat(r, 'f', 6, 64)
-			result := r * 0.621371
-			data.Resultat = strconv.FormatFloat(result, 'f', 6, 64)
-			data.Calcul = data.Valeur1 + " " + data.Unité1 + " -> " + data.Resultat + " " + data.Unité2
-		case "Miles":
-			data.Valeur1 = strconv.FormatFloat(r, 'f', 6, 64)
-			result := r / 0.621371
-			data.Resultat = strconv.FormatFloat(result, 'f', 6, 64)
-			data.Calcul = data.Valeur1 + " " + data.Unité1 + " -> " + data.Resultat + " " + data.Unité2
-		case "Kilogrammes":
-			data.Valeur1 = strconv.FormatFloat(r, 'f', 6, 64)
-			result := r * 2.20462
-			data.Resultat = strconv.FormatFloat(result, 'f', 6, 64)
-			data.Calcul = data.Valeur1 + " " + data.Unité1 + " -> " + data.Resultat + " " + data.Unité2
-		case "Livres":
-			data.Valeur1 = strconv.FormatFloat(r, 'f', 6, 64)
-			result := r / 2.20462
-			data.Resultat = strconv.FormatFloat(result, 'f', 6, 64)
-			data.Calcul = data.Valeur1 + " " + data.Unité1 + " -> " + data.Resultat + " " + data.Unité2
-		case "Celsius":
-			data.Valeur1 = strconv.FormatFloat(r, 'f', 6, 64)
-			result := (r * 9 / 5) + 32
-			data.Resultat = strconv.FormatFloat(result, 'f', 6, 64)
-			data.Calcul = data.Valeur1 + " " + data.Unité1 + " -> " + data.Resultat + " " + data.Unité2
-		case "Fahrenheit":
-			data.Valeur1 = strconv.FormatFloat(r, 'f', 6, 64)
-			result := (r - 32) * 5 / 9
-			data.Resultat = strconv.FormatFloat(result, 'f', 6, 64)
-			data.Calcul = data.Valeur1 + " " + data.Unité1 + " -> " + data.Resultat + " " + data.Unité2
+		data.Finquestion = true
+		if data.NbQuestion == 9 {
+			data.Finquizz = true
+			data.Question = "Quiz Terminé !"
+		} else {
+			data.NbQuestion++
 		}
+	}
+	if r.FormValue("suivant") == "oui" {
+		data.Finquestion = false
+		data.BonneRep = bonnesReponses[data.NbQuestion]
+		data.Question = question[data.NbQuestion]
+		data.Reponses = reponses[data.NbQuestion]
+		data.BonneRep = bonnesReponses[data.NbQuestion]
+		tmpl := template.Must(template.ParseFiles("template/index.html"))
+		tmpl.Execute(w, data)
+		return
 	}
 	tmpl := template.Must(template.ParseFiles("template/index.html"))
 	tmpl.Execute(w, data)
