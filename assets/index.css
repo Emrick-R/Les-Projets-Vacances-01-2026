@@ -45,8 +45,8 @@ h1 {
   background: #ffd700;
   background: linear-gradient(
     90deg,
-    rgb(12, 66, 1) 0%,
-    rgb(80, 218, 45) 100%
+    rgb(233, 15, 15) 0%,
+    rgb(0, 4, 214) 100%
   );
   border-bottom: white solid 1px;
 }
@@ -69,9 +69,9 @@ h1 {
 }
 
 .nav-links:hover {
-  background-color: rgb(80, 218, 45);
+  background-color: rgb(233, 15, 15);
   color: #000000;
-  border-bottom: 3px solid rgb(80, 218, 45);
+  border-bottom: 3px solid rgb(0, 4, 214);
   transform: scale(1.08);
 }
 
@@ -79,4 +79,21 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.ligne {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #4c87af;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }

@@ -1,15 +1,22 @@
 # Les-Projets-Vacances-01-2026
-# Projet Calsulatrice CLI
+# Projet Convertisseur d'Unités
 
-Ce projet a pour but de créer une calculatrice simple en utilisant le langage de programmation Golang. La calculatrice doit être capable d'effectuer des opérations de base telles que l'addition, la soustraction, la multiplication et la division. L'interface utilisateur sera en web, il choisira les opérations à effectuer via des boutons et Saisit deux nombres et affichera le résultat.
+Ce projet a pour but de créer un convertisseur d'unité simple en utilisant le langage de programmation Golang. 
+Le convertisseur permettra à l'utilisateur de convertir des unités :
+- km en miles
+- miles en km
+- kg en livres
+- livres en kg
+- Celsius en Fahrenheit
+- Fahrenheit en Celsius
+
+L'interface utilisateur sera en web, il choisira les opérations à effectuer via des boutons et Saisit deux nombres et affichera le résultat.
 Il pourra recommencer autant de fois qu'il le souhaite.
 
 ## Fonctionnalités
 
-- Addition
-- Soustraction
-- Multiplication
-- Division
+- Concersion d'unités (km/miles, kg/livres, Celsius/Fahrenheit)
+- Saisie de un nombre
 - Interface utilisateur web simple
 
 ## Technologies Utilisées
