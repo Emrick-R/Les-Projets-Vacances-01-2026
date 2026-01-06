@@ -56,7 +56,7 @@ var bonnesReponses []string = []string{
 }
 
 var data = PageData{
-	Question:    "Bienvenue 🎉Convertis avec assurance avec The convertisseur d'unités !",
+	Question:    "Bienvenue 🎉Un quizz super crazy t'attend !",
 	Finquizz:    false,
 	Score:       0,
 	Debutquizz:  false,
